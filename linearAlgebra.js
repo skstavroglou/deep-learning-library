@@ -8,7 +8,6 @@ function matrixCustomProduct(m1, m2) {
   }
   return result;
 }
-
 function matrixHadamard(m1, m2) {
   var result = [];
   if (m1[0].length > 0 && m2[0].length > 0) {
@@ -25,7 +24,6 @@ function matrixHadamard(m1, m2) {
   }
   return result;
 }
-
 function matrixSum(m1, m2) {
   var result = [];
   if (m1[0].length > 0 && m2[0].length > 0) {
@@ -42,7 +40,6 @@ function matrixSum(m1, m2) {
   }
   return result;
 }
-
 function matrixProduct(m1, m2) {
   if (m1[0].length > 0 && m2[0].length > 0) {
     if (m1[0].length === m2.length) {
@@ -78,12 +75,22 @@ function twoDmultiplication(m1, m2) {
 }
 function twoDoneDmultiplication(m1, m2) {
   var result = [];
-  for (var i = 0; i < m1.length; i++) {
-    var sum = 0;
-    for (var j = 0; j < m1[0].length; j++) {
-      sum += m1[i][j] * m2[j];
+  if (m1[0].length === m2.length) {
+    for (var i = 0; i < m1.length; i++) {
+      var sum = 0;
+      for (var j = 0; j < m1[0].length; j++) {
+        sum += m1[i][j] * m2[j];
+      }
+      result[i] = sum;
     }
-    result[i] = sum;
+  } else {
+    for (var j = 0; j < m1[0].length; j++) {
+      var sum = 0;
+      for (var i = 0; i < m1.length; i++) {
+        sum += m1[i][j] * m2[i];
+      }
+      result[j] = sum;
+    }
   }
   return result;
 }

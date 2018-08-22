@@ -65,21 +65,42 @@ class ANN {
   }
   outputLayerBackwardPass() {
     let alpha = this.hiddenLayers.a[this.hiddenNodes.length - 1];
-    let dCda = dQuadraticCost(this.outputLayer.a, this.outputLayer.y);
     let dsigmadz = dSigmoid(this.outputLayer.z);
-    let delta = matrixHadamard(dCda, dsigmadz);
-    this.outputLayer.dCdW = 
-     matrixSum(
+    let dCda = dQuadraticCost(this.outputLayer.a, this.outputLayer.y);
+    this.outputLayer.delta = matrixHadamard(dCda, dsigmadz);
+    this.outputLayer.dCdW = matrixSum(
       this.outputLayer.dCdW,
-      matrixCustomProduct(delta, alpha)
+      matrixCustomProduct(this.outputLayer.delta, alpha)
     );
-    console.log(`dCdW corrections: `);
-    console.table(this.outputLayer.dCdW);
   }
   outputLayerLearningReset() {
     this.outputLayer.reset();
   }
-  hiddenLayersBackwardPass() {}
+  hiddenLayersBackwardPass() {
+    for (let i = this.hiddenNodes.length - 1; i >= 0; i--) {
+      let alpha = i > 0 ? this.hiddenLayers.a[i - 1] : this.inputLayer.a;
+      let dsigmadz = dSigmoid(this.hiddenLayers.z[i]);
+      let deltaInFront =
+        i === this.hiddenNodes.length - 1
+          ? this.outputLayer.delta
+          : this.hiddenLayers.delta[i + 1];
+      let w_prod_deltaInFront =
+        i === this.hiddenNodes.length - 1
+          ? matrixProduct(this.outputLayer.w, deltaInFront)
+          : matrixProduct(this.hiddenLayers.w[i + 1], deltaInFront);
+      this.hiddenLayers.delta[i] = matrixHadamard(
+        w_prod_deltaInFront,
+        dsigmadz
+      );
+      this.hiddenLayers.dCdW[i] = matrixSum(
+        this.hiddenLayers.dCdW[i],
+        matrixCustomProduct(this.hiddenLayers.delta[i], alpha)
+      );
+    }
+  }
+  hiddenLayersLearningReset() {
+    this.hiddenLayers.reset();
+  }
 }
 
 CARVR = new ANN("CARVR", true, 1, 2, [3, 4, 5], 2, 0.5);
@@ -101,4 +122,4 @@ CARVR.hiddenLayersForwardPass();
 CARVR.outputLayerForwardPass();
 CARVR.errorCorrection(clayset, 1);
 CARVR.outputLayerBackwardPass();
-CARVR.outputLayerLearningReset();
+CARVR.hiddenLayersBackwardPass();

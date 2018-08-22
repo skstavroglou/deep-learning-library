@@ -16,19 +16,37 @@ class hiddenLayers {
     this.z = new Array(this.hiddenNodes);
     this.a = new Array(this.hiddenNodes);
     this.heta = new Array(this.hiddenNodes);
+    this.delta = new Array(this.hiddenNodes);
+    this.dCdW = new Array(this.hiddenNodes);
     for (let i = 0; i < this.hiddenNodes.length; i++) {
       this.ids[i] = new Array(this.hiddenNodes[i]);
       this.w[i] = new Array(this.hiddenNodes[i]);
       this.z[i] = new Array(this.hiddenNodes[i]).fill(0);
       this.a[i] = new Array(this.hiddenNodes[i]).fill(0);
       this.heta[i] = new Array(this.hiddenNodes[i]).fill(0.1);
+      this.delta[i] = new Array(this.hiddenNodes[i]).fill(0);
+      this.dCdW[i] = new Array(this.hiddenNodes[i]);
       for (let j = 0; j < this.hiddenNodes[i]; j++) {
         this.ids[i][j] = `H${hindex}`;
         this.w[i][j] =
           i === 0
             ? listOfSeededRandoms(this.inputNodes, 1)
             : listOfSeededRandoms(this.hiddenNodes[i - 1], 1);
+        this.dCdW[i][j] =
+          i === 0
+            ? new Array(this.inputNodes).fill(0)
+            : new Array(this.hiddenNodes[i - 1]).fill(0);
         hindex++;
+      }
+    }
+  }
+  reset() {
+    for (let i = 0; i < this.hiddenNodes.length; i++) {
+      for (let j = 0; j < this.hiddenNodes[i]; j++) {
+        this.dCdW[i][j] =
+          i === 0
+            ? new Array(this.inputNodes).fill(0)
+            : new Array(this.hiddenNodes[i - 1]).fill(0);
       }
     }
   }
