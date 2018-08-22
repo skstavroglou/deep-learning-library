@@ -7,9 +7,10 @@ class inputLayer {
   }
 }
 class hiddenLayers {
-  constructor(inputNodes, hiddenNodes) {
+  constructor(inputNodes, hiddenNodes, learningRate) {
     this.inputNodes = inputNodes;
     this.hiddenNodes = hiddenNodes;
+    this.learningRate = learningRate;
     let hindex = 1;
     this.ids = new Array(this.hiddenNodes);
     this.w = new Array(this.hiddenNodes);
@@ -23,11 +24,15 @@ class hiddenLayers {
       this.w[i] = new Array(this.hiddenNodes[i]);
       this.z[i] = new Array(this.hiddenNodes[i]).fill(0);
       this.a[i] = new Array(this.hiddenNodes[i]).fill(0);
-      this.heta[i] = new Array(this.hiddenNodes[i]).fill(0.1);
+      this.heta[i] = new Array(this.hiddenNodes[i]);
       this.delta[i] = new Array(this.hiddenNodes[i]).fill(0);
       this.dCdW[i] = new Array(this.hiddenNodes[i]);
       for (let j = 0; j < this.hiddenNodes[i]; j++) {
         this.ids[i][j] = `H${hindex}`;
+        this.heta[i][j] =
+          i === 0
+            ? new Array(this.inputNodes).fill(this.learningRate)
+            : new Array(this.hiddenNodes[i - 1]).fill(this.learningRate);
         this.w[i][j] =
           i === 0
             ? listOfSeededRandoms(this.inputNodes, 1)
@@ -50,21 +55,25 @@ class hiddenLayers {
       }
     }
   }
-}
-class biasLayer {
-  constructor(size) {
-    this.size = size;
-    this.ids = [];
-    this.a = new Array(this.size).fill(1);
-    for (let i = 0; i < this.size; i++) this.ids[i] = `B${i + 1}`;
+  updateWeights() {
+    for (let i = 0; i < this.hiddenNodes.length; i++) {
+      for (let j = 0; j < this.hiddenNodes[i]; j++) {
+        this.w[i][j] = matrixSum(
+          this.w[i][j],
+          matrixHadamard(this.heta[i][j], this.dCdW[i][j])
+        );
+      }
+    }
   }
 }
 class outputLayer {
-  constructor(hiddenNodes, outputNodes) {
+  constructor(hiddenNodes, outputNodes, learningRate) {
     this.hiddenNodes = hiddenNodes;
     this.outputNodes = outputNodes;
+    this.learningRate = learningRate;
     this.ids = [];
     this.w = [];
+    this.heta = [];
     this.dCdW = [];
     for (let i = 0; i < this.outputNodes; i++) {
       this.ids[i] = `O${i + 1}`;
@@ -72,13 +81,15 @@ class outputLayer {
         this.hiddenNodes[this.hiddenNodes.length - 1],
         1
       );
+      this.heta[i] = new Array(
+        this.hiddenNodes[this.hiddenNodes.length - 1]
+      ).fill(this.learningRate);
       this.dCdW[i] = new Array(
         this.hiddenNodes[this.hiddenNodes.length - 1]
       ).fill(0);
     }
     this.z = new Array(this.outputNodes).fill(0);
     this.a = new Array(this.outputNodes).fill(0);
-    this.heta = new Array(this.outputNodes).fill(0.1);
     this.delta = new Array(this.outputNodes).fill(0);
     this.y = new Array(this.outputNodes).fill(0);
   }
@@ -87,6 +98,14 @@ class outputLayer {
       this.dCdW[i] = new Array(
         this.hiddenNodes[this.hiddenNodes.length - 1]
       ).fill(0);
+    }
+  }
+  updateWeights() {
+    for (let i = 0; i < this.outputNodes; i++) {
+      this.w[i] = matrixSum(
+        this.w[i],
+        matrixHadamard(this.heta[i], this.dCdW[i])
+      );
     }
   }
 }

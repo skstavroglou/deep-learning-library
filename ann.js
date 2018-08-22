@@ -22,15 +22,18 @@ class ANN {
     this.inputLayer = new inputLayer(this.inputNodes);
   }
   manifestHiddenLayers() {
-    this.hiddenLayers = new hiddenLayers(this.inputNodes, this.hiddenNodes);
-  }
-  manifestBiasLayer() {
-    if (this.includeBias === true) {
-      this.biasLayer = new biasLayer(this.hiddenNodes.length + 1);
-    }
+    this.hiddenLayers = new hiddenLayers(
+      this.inputNodes,
+      this.hiddenNodes,
+      this.learningRate
+    );
   }
   manifestOutputLayer() {
-    this.outputLayer = new outputLayer(this.hiddenNodes, this.outputNodes);
+    this.outputLayer = new outputLayer(
+      this.hiddenNodes,
+      this.outputNodes,
+      this.learningRate
+    );
   }
   inputLayerForwardPass(data, instance) {
     this.inputLayer.a = data[instance];
@@ -73,9 +76,6 @@ class ANN {
       matrixCustomProduct(this.outputLayer.delta, alpha)
     );
   }
-  outputLayerLearningReset() {
-    this.outputLayer.reset();
-  }
   hiddenLayersBackwardPass() {
     for (let i = this.hiddenNodes.length - 1; i >= 0; i--) {
       let alpha = i > 0 ? this.hiddenLayers.a[i - 1] : this.inputLayer.a;
@@ -98,28 +98,16 @@ class ANN {
       );
     }
   }
+  hiddenWeightsUpdate() {
+    this.hiddenLayers.updateWeights();
+  }
+  outputWeightsUpdate() {
+    this.outputLayer.updateWeights();
+  }
   hiddenLayersLearningReset() {
     this.hiddenLayers.reset();
   }
+  outputLayerLearningReset() {
+    this.outputLayer.reset();
+  }
 }
-
-CARVR = new ANN("CARVR", true, 1, 2, [3, 4, 5], 2, 0.5);
-CARVR.manifestInputLayer();
-CARVR.manifestHiddenLayers();
-CARVR.manifestBiasLayer();
-CARVR.manifestOutputLayer();
-const clayset = [
-  [0.12, 0.5],
-  [0.121, 0.53],
-  [0.124, 0.57],
-  [0.132, 0.6],
-  [0.141, 0.73],
-  [0.154, 0.87],
-  [0.163, 0.82]
-];
-CARVR.inputLayerForwardPass(clayset, 0);
-CARVR.hiddenLayersForwardPass();
-CARVR.outputLayerForwardPass();
-CARVR.errorCorrection(clayset, 1);
-CARVR.outputLayerBackwardPass();
-CARVR.hiddenLayersBackwardPass();
