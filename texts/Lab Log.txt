@@ -303,6 +303,8 @@ MOTIVATION: An 800-page comprehensive book on deep learning theory
 
 ### SHORT REPORT:
 
+### LONG REPORT:
+
 #####
 # 1 #
 #####
@@ -321,3 +323,190 @@ a influences the value of b and b influences the value of c, but that a and c ar
 independent given b. We can represent the probability distribution over all three
 variables as a product of probability distributions over two variables:
 p(a, b, c) = p(a)p(b | a)p(c | b).
+
+#####
+# 3 #
+#####
+
+We can
+thus reduce f (x) by moving x in small steps with opposite sign of the derivative.
+This technique is called gradient descent
+
+#####
+# 4 #
+#####
+
+When f (x) = 0, the derivative provides no information about which direction
+to move. Points where f(x) = 0 are known as critical points or stationary
+points. A local minimum is a point where f (x) is lower than at all neighboring
+points, so it is no longer possible to decrease f(x) by making infinitesimal steps.
+A local maximum is a point where f (x) is higher than at all neighboring points,
+
+#####
+# 5 #
+#####
+
+The second derivative tells
+us how the first derivative will change as we vary the input. This is important
+because it tells us whether a gradient step will cause as much of an improvement
+as we would expect based on the gradient alone. We can think of the second
+derivative as measuring curvature.
+If such a function has a second derivative of zero,
+then there is no curvature. It is a perfectly flat line, and its value can be predicted
+using only the gradient. If the gradient is 1, then we can make a step of size 
+along the negative gradient, and the cost function will decrease by . If the second
+derivative is negative, the function curves downward, so the cost function will
+actually decrease by more than . Finally, if the second derivative is positive, the
+function curves upward, so the cost function can decrease by less than .
+
+#####
+# 6 #
+#####
+
+When our function has multiple input dimensions, there are many second
+derivatives. These derivatives can be collected together into a matrix called the
+Hessian matrix.
+The second derivative in a specific direction represented by a unit
+vector d is given by dHd. When d is an eigenvector of H , the second derivative
+in that direction is given by the corresponding eigenvalue. For other directions of
+d, the directional second derivative is a weighted average of all of the eigenvalues,
+with weights between 0 and 1, and eigenvectors that have smaller angle with d
+receiving more weight. The maximum eigenvalue determines the maximum second
+derivative and the minimum eigenvalue determines the minimum second derivative.
+
+#####
+# 7 #
+#####
+
+The second derivative can be used to determine whether a critical point is
+a local maximum, a local minimum, or saddle point. Recall that on a critical
+point, f (x) = 0. When the second derivative f(x) > 0, the first derivative f (x)
+increases as we move to the right and decreases as we move to the left. This means f (x − ) < 0 and f (x + ) > 0 for small enough . In other words, as we move
+right, the slope begins to point uphill to the right, and as we move left, the slope
+begins to point uphill to the left. Thus, when f (x) = 0 and f(x) > 0, we can
+conclude that x is a local minimum. Similarly, when f (x) = 0 and f (x) < 0, we
+can conclude that x is a local maximum. This is known as the second derivative
+test. Unfortunately, when f (x) = 0, the test is inconclusive. In this case x may
+be a saddle point, or a part of a flat region.
+
+#####
+# 8 #
+#####
+
+In multiple dimensions, we need to examine all of the second derivatives of the
+function. Using the eigendecomposition of the Hessian matrix, we can generalize
+the second derivative test to multiple dimensions. At a critical point, where
+∇xf (x) = 0, we can examine the eigenvalues of the Hessian to determine whether
+the critical point is a local maximum, local minimum, or saddle point. When the
+Hessian is positive definite (all its eigenvalues are positive), the point is a local
+minimum. This can be seen by observing that the directional second derivative
+in any direction must be positive, and making reference to the univariate second
+derivative test. Likewise, when the Hessian is negative definite (all its eigenvalues
+are negative), the point is a local maximum. In multiple dimensions, it is actually
+possible to find positive evidence of saddle points in some cases. When at least
+one eigenvalue is positive and at least one eigenvalue is negative, we know that
+x is a local maximum on one cross section of f but a local minimum on another
+cross section. See figure 4.5 for an example. Finally, the multidimensional second
+derivative test can be inconclusive, just like the univariate version. The test is
+inconclusive whenever all of the non-zero eigenvalues have the same sign, but at
+least one eigenvalue is zero. This is because the univariate second derivative test is
+inconclusive in the cross section corresponding to the zero eigenvalue.
+
+#####
+# 9 #
+#####
+
+Optimization algorithms that use only the gradient, such as gradient descent,
+are called first-order optimization algorithms. Optimization algorithms that
+also use the Hessian matrix, such as Newton’s method, are called second-order
+optimization algorithms
+
+######
+# 10 #
+######
+
+How can we affect performance on the test set when we get to observe only the training set? The field of statistical learning theory provides some answers. If
+the training and the test set are collected arbitrarily, there is indeed little we can
+do. If we are allowed to make some assumptions about how the training and test
+set are collected, then we can make some progress.
+The train and test data are generated by a probability distribution over datasets
+called the data generating process. We typically make a set of assumptions
+known collectively as the i.i.d. assumptions. These assumptions are that the
+examples in each dataset are independent from each other, and that the train
+set and test set are identically distributed, drawn from the same probability
+distribution as each other. This assumption allows us to describe the data generating
+process with a probability distribution over a single example. The same
+distribution is then used to generate every train example and every test example.
+We call that shared underlying distribution the data generating distribution,
+denoted pdata. This probabilistic framework and the i.i.d. assumptions allow us to
+mathematically study the relationship between training error and test error.
+
+######
+# 11 #
+######
+
+In our weight decay example, we expressed our preference for linear functions
+defined with smaller weights explicitly, via an extra term in the criterion we
+minimize. There are many other ways of expressing preferences for different
+solutions, both implicitly and explicitly. Together, these different approaches
+are known as regularization. Regularization is any modification we make to a
+learning algorithm that is intended to reduce its generalization error but not its
+training error. Regularization is one of the central concerns of the field of machine
+learning, rivaled in its importance only by optimization.
+The no free lunch theorem has made it clear that there is no best machine
+learning algorithm, and, in particular, no best form of regularization. Instead
+we must choose a form of regularization that is well-suited to the particular task
+we want to solve. The philosophy of deep learning in general and this book in
+particular is that a very wide range of tasks (such as all of the intellectual tasks
+that people can do) may
+
+######
+# 12 #
+######
+
+Most machine learning algorithms have several settings that we can use to control
+the behavior of the learning algorithm. These settings are called hyperparameters.
+The values of hyperparameters are not adapted by the learning algorithm
+itself (though we can design a nested learning procedure where one learning
+algorithm learns the best hyperparameters for another learning algorithm).
+
+######
+# 13 #
+######
+
+When the dataset has hundreds of thousands of examples or more, this is not a
+serious issue. When the dataset is too small, are alternative procedures enable one
+to use all of the examples in the estimation of the mean test error, at the price of
+increased computational cost. These procedures are based on the idea of repeating
+the training and testing computation on different randomly chosen subsets or splits
+of the original dataset. The most common of these is the k-fold cross-validation
+procedure, shown in algorithm 5.1, in which a partition of the dataset is formed by
+splitting it into k non-overlapping subsets. The test error may then be estimated
+by taking the average test error across k trials.
+
+######
+# 14 #
+######
+
+The design of hidden units is an extremely active area of research and does not
+yet have many definitive guiding theoretical principles.
+Rectified linear units are an excellent default choice of hidden unit. Many other
+types of hidden units are available. It can be difficult to determine when to use
+which kind (though rectified linear units are usually an acceptable choice).
+
+######
+# 15 #
+######
+
+When a sigmoidal activation function must be used, the hyperbolic tangent
+activation function typically performs better than the logistic sigmoid
+
+
+######
+# 16 #
+######
+
+Many strategies
+used in machine learning are explicitly designed to reduce the test error, possibly
+at the expense of increased training error. These strategies are known collectively
+as regularization.

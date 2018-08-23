@@ -5,3 +5,9 @@
 # 22 AUG 2018 # CHANGE DYNAMICALLY ERROR FUNCTIONS
 
 # 22 AUG 2018 # FIGURE OUT THE EXACT METHOD FOR LEARNING AFTER BACKPROPAGATION (read )
+
+# 23 AUG 2018 # EXAMINE THE INTELLIGENCE OF GRADIENT DESCENT ACCORDING TO THE sign or 0 of THE GRADIENT (see page 99 in deeplearning book)
+
+# 23 AUG 2018 # EXAMINE THE POTENTIAL OF EIGENVECTOR DECOMPOSITION OR SVD IN LEARNING (Imagine the matrix of weights and the meaning of eigenvalues and eigenvectors)
+
+# 23 AUG 2018 # Can we exploit memories of geometrical / topological information in the search space of weight optimization? After all they are manifolds....
