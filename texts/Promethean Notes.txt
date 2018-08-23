@@ -1,0 +1,86 @@
+########################
+### PROMETHEAN NOTES ###
+########################
+
+#########################################################
+### March 30, 2018: Epoch is different than Iteration ###
+#########################################################
+
+Epoch
+  An epoch describes the number of times the algorithm sees the entire data set. So, each time the algorithm has seen all samples in the dataset, an epoch has completed.
+
+Iteration
+  An iteration describes the number of times a batch of data passed through the algorithm. In the case of neural networks, that means the forward pass and backward pass. So, every time you pass a batch of data through the NN, you completed an iteration.
+
+Example
+  An example might make it clearer.
+
+  Say you have a dataset of 10 examples (or samples). You have a batch size of 2, and you've specified you want the algorithm to run for 3 epochs.
+
+  Therefore, in each epoch, you have 5 batches (10/2 = 5). Each batch gets passed through the algorithm, therefore you have 5 iterations per epoch. Since you've specified 3 epochs, you have a total of 15 iterations (5*3 = 15) for training.
+
+################################################################
+### March 30, 2018: On the nuts and bolts of backpropagation ###
+################################################################
+
+How to apply backpropagation?
+
+Say we have a total of 250 time instances in other words, we have two time series of length 250.
+
+PATH 1: 
+ After every data input e.g I1(t=1) = 0.05, I2(t=1) = 0.99 apply the backpropagation
+
+PATH 2:
+ Instead of applying backpropagation after every time instancem,we can apply backpropagation cummulatively once we gather a portion of the total time instances. For example we can apply it every 50 time instances.
+
+Comment:
+  There are two extremes:
+    1) Backpropagate every single error
+    2) Backpropagate all errors cumulated at the end of the last input (in our case after all the 250 instances have beeen parsed)
+
+
+######################################################################
+### March 31, 2018: How to solve the problem of non-[0,1] values ? ###
+######################################################################
+
+IDEA 1: 
+  Taking the logarithm of the input data values before you apply them to the neural network, and then applying an anti-logarithm to the output values.
+
+  Why is it a good idea to take logarithms?
+    The reason that log-transform is a good idea is to activate the central limit theorem. The noise can be best modeled by multiplication noise instead of additive noise. In this sense the stock prices follow a log-normal distribution. As a result the Stock prices at time i denoted by Si can be predicted from the closing price as time i-1 denoted by S(i-1) such that Si=S(i+1)*noise. By taking the log-transform the multiplicative noise is transformed to an additive noise source such that the Central Limit Theorem gets activated. The Log(Si) is Gaussian distributed or Si is log-normally distributed. This is the whole basis of the Black-and-Scholes stochastic differential equation and financial calculus. A very accessible article starting from these simple principles of the CLT in financial prices is in "LOGNORMAL MODEL FOR STOCK PRICES" by Michael Sharpe found on the web at: http://math.ucsd.edu/~msharpe/stockgrowth.pdf
+
+
+
+#####################################################################################
+### April 2, 2018: Maps pave the way for the abstractification of Neural Networks ###
+#####################################################################################
+
+console.log(`CNDR Manifested Input Keys: ${CNDR.InputLayerKeys}`);
+      //console.log(`CNDR Manifested Input Values: ${CNDR.InputLayerValues}`);
+      console.log(`CNDR Manifested Input Node I1: ${CNDR.InputLayerValues[1].output()}`);
+      for (let [key, value] of CNDR.InputLayer) {
+        console.log(`${key} = ${value}`);
+      }
+      for (let value of CNDR.InputLayer.values()) {
+        console.log(value);
+      }
+      // Create an array of the key value pairs
+      const keyValArr = Array.from(CNDR.InputLayer);
+      console.log(keyValArr);
+      // Create an array of the values
+      const valArr = Array.from(CNDR.InputLayer.values());
+      console.log(valArr);
+      // Create an array of the keys
+      const keyArr = Array.from(CNDR.InputLayer.keys());
+      console.log(keyArr);
+
+#####################################################################################
+### April 7, 2018: Maps pave the way for the abstractification of Neural Networks ###
+#####################################################################################
+
+// DEEP FORCE ACCUMULATION ACCOUNTS FOR THE BACKPROPAGATION FORCES THAT NEED TO ACCUMULATE FROM ALL DEEPER NODES IN ORDER TO REACH THE NODE WHOSE WEIGHT WE WANT TO CORRECT
+
+
+
+
+

@@ -71,7 +71,7 @@ class ANN {
     let dsigmadz = dSigmoid(this.outputLayer.z);
     let dCda = dQuadraticCost(this.outputLayer.a, this.outputLayer.y);
     this.outputLayer.delta = matrixHadamard(dCda, dsigmadz);
-    this.outputLayer.dCdW = matrixSum(
+    this.outputLayer.dCdW = matrixDifference(
       this.outputLayer.dCdW,
       matrixCustomProduct(this.outputLayer.delta, alpha)
     );
@@ -92,7 +92,7 @@ class ANN {
         w_prod_deltaInFront,
         dsigmadz
       );
-      this.hiddenLayers.dCdW[i] = matrixSum(
+      this.hiddenLayers.dCdW[i] = matrixDifference(
         this.hiddenLayers.dCdW[i],
         matrixCustomProduct(this.hiddenLayers.delta[i], alpha)
       );

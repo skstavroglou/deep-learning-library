@@ -1,0 +1,16 @@
+// console.log(`Forward Pass Input Layer:`);
+    // console.table(this.inputLayer.a);
+
+    // console.log(`HL${i + 1} Weight Matrix:`);
+      // console.table(this.hiddenLayers.w[i]);
+      // console.log(`HL${i + 1} Prev Layer Activation Matrix:`);
+      // console.table(this.hiddenLayers.a[i - 1]);
+      // console.log(`Forward Pass Hidden Layer ${i+1}:`);
+      // console.table(this.hiddenLayers.z[i]);
+
+      // console.log(`Output Layer Weight Matrix`);
+    // console.table(this.outputLayer.w);
+    // console.log(`Prev Layer Activation Matrix:`);
+    // console.table(this.hiddenLayers.a[this.hiddenNodes.length - 1]);
+    // console.log(`Final Output`);
+    // console.table(this.outputLayer.z);

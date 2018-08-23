@@ -40,6 +40,22 @@ function matrixSum(m1, m2) {
   }
   return result;
 }
+function matrixDifference(m1, m2) {
+  var result = [];
+  if (m1[0].length > 0 && m2[0].length > 0) {
+    for (var i = 0; i < m1.length; i++) {
+      result[i] = [];
+      for (var j = 0; j < m1[0].length; j++) {
+        result[i][j] = m1[i][j] - m2[i][j];
+      }
+    }
+  } else {
+    for (var i = 0; i < m1.length; i++) {
+      result[i] = m1[i] - m2[i];
+    }
+  }
+  return result;
+}
 function matrixProduct(m1, m2) {
   if (m1[0].length > 0 && m2[0].length > 0) {
     if (m1[0].length === m2.length) {
