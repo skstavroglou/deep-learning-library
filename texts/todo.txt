@@ -10,7 +10,11 @@
 
 # 26 AUG 2018 # Transfer the Trainer Class | DONE
 
-# 26 AUG 2018 # VIP # Import CSV Dataset "Churn_Modelling.csv" and run it 
+# 26 AUG 2018 # VIP # Import CSV Dataset "Churn_Modelling.csv" | DONE
+
+# 26 AUG 2018 # VIP # Convert categorical data to numeric
+
+# 26 AUG 2018 # VIP # Train an ANN on "Churn_Modelling.csv"
 
 # 26 AUG 2018 # Transfer the error plots from FNN project
 

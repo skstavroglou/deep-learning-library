@@ -3,7 +3,7 @@ CARVR = new ANN(
   true,
   1,
   2,
-  [100],
+  [2, 2, 2],
   2,
   0.5,
   "sigmoid",
@@ -26,4 +26,4 @@ console.log("My dataset: " + clayset);
 console.log("Dataset length: " + clayset.length);
 
 const Red = new Trainer(CARVR, clayset, 1, 100, 1);
-Red.train();
+// Red.train();
