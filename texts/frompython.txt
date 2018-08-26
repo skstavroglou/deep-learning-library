@@ -1,0 +1,18 @@
+relu for hidden layers | DONE
+sigmoid for output layers
+
+1 Input Layer * 11 node
+2 Hidden Layers * 6 node
+1 Output Layer * 1 node
+
+hadelin's opinion for No of Hidden Nodes
+avg(no of nodes input layer (11), no of nodes in output layer(1)) = 6 nodes in hidden layer
+
+randomly inituialize the weights close to 0 with Uniform
+
+Training: SGD ADAM
+
+Error function: binary cross-entropy | DONE
+
+Criterion that you choose to evaluate your model
+'metrics'. Ti improve the model's performance.

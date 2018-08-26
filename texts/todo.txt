@@ -1,13 +1,36 @@
+#############
+### BASIC ###
+#############
+
+# 22 AUG 2018 # CHANGE DYNAMICALLY ACTIVATION FUNCTIONS | DONE
+
+# 22 AUG 2018 # CHANGE DYNAMICALLY ERROR FUNCTIONS https://ml-cheatsheet.readthedocs.io/en/latest/loss_functions.html | DONE
+
+# 22 AUG 2018 # FIGURE OUT THE EXACT METHOD FOR LEARNING AFTER BACKPROPAGATION (read ) | DONE
+
+# 26 AUG 2018 # Transfer the Trainer Class | DONE
+
+# 26 AUG 2018 # VIP # Import CSV Dataset "Churn_Modelling.csv" and run it 
+
+# 26 AUG 2018 # Transfer the error plots from FNN project
+
+# 25 AUG 2018 # K-Fold Cross Validation
+
+# 25 AUG 2018 # Implement dropout: at each iteration some neurons are randomly disabled.
+
+# 26 AUG 2018 # Implement Precision and Recall (binary results)
+
 # 22 AUG 2018 # ROBUSTNESS CHECK OF linearAlgebra.js
 
-# 22 AUG 2018 # CHANGE DYNAMICALLY ACTIVATION FUNCTIONS
-
-# 22 AUG 2018 # CHANGE DYNAMICALLY ERROR FUNCTIONS
-
-# 22 AUG 2018 # FIGURE OUT THE EXACT METHOD FOR LEARNING AFTER BACKPROPAGATION (read )
+####################
+##### ADVANCED #####
+####################
 
 # 23 AUG 2018 # EXAMINE THE INTELLIGENCE OF GRADIENT DESCENT ACCORDING TO THE sign or 0 of THE GRADIENT (see page 99 in deeplearning book)
 
 # 23 AUG 2018 # EXAMINE THE POTENTIAL OF EIGENVECTOR DECOMPOSITION OR SVD IN LEARNING (Imagine the matrix of weights and the meaning of eigenvalues and eigenvectors)
 
 # 23 AUG 2018 # Can we exploit memories of geometrical / topological information in the search space of weight optimization? After all they are manifolds....
+
+# 25 AUG 2018 # Tapping hyperparameters with GRID SEARCH
+epcohs, batch size, optimizer number of neurons

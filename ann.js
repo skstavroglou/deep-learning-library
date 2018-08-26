@@ -6,7 +6,10 @@ class ANN {
     inputNodes,
     hiddenNodes,
     outputNodes,
-    learningRate
+    learningRate,
+    hiddenActivation,
+    outputActivation,
+    errorFunction
   ) {
     this.id = id;
     this.includeBias = includeBias;
@@ -15,6 +18,9 @@ class ANN {
     this.inputNodes = inputNodes;
     this.hiddenNodes = hiddenNodes;
     this.outputNodes = outputNodes;
+    this.hiddenActivation = hiddenActivation;
+    this.outputActivation = outputActivation;
+    this.errorFunction = errorFunction;
     this.totalError = 0;
     console.log(this);
   }
@@ -48,7 +54,7 @@ class ANN {
         let b = new Array(this.hiddenNodes[i]).fill(this.biasValue);
         this.hiddenLayers.z[i] = matrixSum(this.hiddenLayers.z[i], b);
       }
-      this.hiddenLayers.a[i] = sigmoid(this.hiddenLayers.z[i]);
+      this.hiddenLayers.forwardActivation(this.hiddenActivation, i);
     }
   }
   outputLayerForwardPass() {
@@ -60,17 +66,26 @@ class ANN {
       let b = new Array(this.outputNodes).fill(this.biasValue);
       this.outputLayer.z = matrixSum(this.outputLayer.z, b);
     }
-    this.outputLayer.a = sigmoid(this.outputLayer.z);
+    this.outputLayer.forwardActivation(this.outputActivation);
   }
   errorCorrection(data, instance) {
     this.outputLayer.y = data[instance];
-    this.totalError += quadraticCost(this.outputLayer.a, this.outputLayer.y);
+    if (this.errorFunction === "quadratic") {
+      this.totalError += quadraticCost(this.outputLayer.a, this.outputLayer.y);
+    } else if (this.errorFunction === "crossEntropy") {
+      this.totalError += crossEntropy(this.outputLayer.a, this.outputLayer.y);
+    }
   }
   outputLayerBackwardPass() {
     let alpha = this.hiddenLayers.a[this.hiddenNodes.length - 1];
-    let dsigmadz = dSigmoid(this.outputLayer.z);
-    let dCda = dQuadraticCost(this.outputLayer.a, this.outputLayer.y);
-    this.outputLayer.delta = matrixHadamard(dCda, dsigmadz);
+    this.outputLayer.backwardActivation(this.outputActivation);
+    let dCda;
+    if (this.errorFunction === "quadratic") {
+      dCda = dQuadraticCost(this.outputLayer.a, this.outputLayer.y);
+    } else if (this.errorFunction === "crossEntropy") {
+      dCda = dCrossEntropy(this.outputLayer.a, this.outputLayer.y);
+    }
+    this.outputLayer.delta = matrixHadamard(dCda, this.outputLayer.dsigmadz);
     this.outputLayer.dCdW = matrixDifference(
       this.outputLayer.dCdW,
       matrixCustomProduct(this.outputLayer.delta, alpha)
@@ -79,7 +94,7 @@ class ANN {
   hiddenLayersBackwardPass() {
     for (let i = this.hiddenNodes.length - 1; i >= 0; i--) {
       let alpha = i > 0 ? this.hiddenLayers.a[i - 1] : this.inputLayer.a;
-      let dsigmadz = dSigmoid(this.hiddenLayers.z[i]);
+      this.hiddenLayers.backwardActivation(this.hiddenActivation, i);
       let deltaInFront =
         i === this.hiddenNodes.length - 1
           ? this.outputLayer.delta
@@ -90,7 +105,7 @@ class ANN {
           : matrixProduct(this.hiddenLayers.w[i + 1], deltaInFront);
       this.hiddenLayers.delta[i] = matrixHadamard(
         w_prod_deltaInFront,
-        dsigmadz
+        this.hiddenLayers.dsigmadz
       );
       this.hiddenLayers.dCdW[i] = matrixDifference(
         this.hiddenLayers.dCdW[i],

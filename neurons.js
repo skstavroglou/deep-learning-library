@@ -8,6 +8,7 @@ class inputLayer {
 }
 class hiddenLayers {
   constructor(inputNodes, hiddenNodes, learningRate) {
+    this.dsigmadz;
     this.inputNodes = inputNodes;
     this.hiddenNodes = hiddenNodes;
     this.learningRate = learningRate;
@@ -45,6 +46,20 @@ class hiddenLayers {
       }
     }
   }
+  forwardActivation(activation, i) {
+    if (activation === "sigmoid") {
+      this.a[i] = sigmoid(this.z[i]);
+    } else if (activation === "relu") {
+      this.a[i] = relu(this.z[i]);
+    }
+  }
+  backwardActivation(activation, i) {
+    if (activation === "sigmoid") {
+      this.dsigmadz = dSigmoid(this.z[i]);
+    } else if (activation === "relu") {
+      this.dsigmadz = dRelu(this.z[i]);
+    }
+  }
   reset() {
     for (let i = 0; i < this.hiddenNodes.length; i++) {
       for (let j = 0; j < this.hiddenNodes[i]; j++) {
@@ -58,7 +73,7 @@ class hiddenLayers {
   updateWeights() {
     for (let i = 0; i < this.hiddenNodes.length; i++) {
       for (let j = 0; j < this.hiddenNodes[i]; j++) {
-        this.w[i][j] = matrixSum(
+        this.w[i][j] = matrixDifference(
           this.w[i][j],
           matrixHadamard(this.heta[i][j], this.dCdW[i][j])
         );
@@ -68,6 +83,7 @@ class hiddenLayers {
 }
 class outputLayer {
   constructor(hiddenNodes, outputNodes, learningRate) {
+    this.dsigmadz;
     this.hiddenNodes = hiddenNodes;
     this.outputNodes = outputNodes;
     this.learningRate = learningRate;
@@ -93,6 +109,20 @@ class outputLayer {
     this.delta = new Array(this.outputNodes).fill(0);
     this.y = new Array(this.outputNodes).fill(0);
   }
+  forwardActivation(activation) {
+    if (activation === "sigmoid") {
+      this.a = sigmoid(this.z);
+    } else if (activation === "relu") {
+      this.a = relu(this.z);
+    }
+  }
+  backwardActivation(activation) {
+    if (activation === "sigmoid") {
+      this.dsigmadz = dSigmoid(this.z);
+    } else if (activation === "relu") {
+      this.dsigmadz = dRelu(this.z);
+    }
+  }
   reset() {
     for (let i = 0; i < this.outputNodes; i++) {
       this.dCdW[i] = new Array(
@@ -102,7 +132,7 @@ class outputLayer {
   }
   updateWeights() {
     for (let i = 0; i < this.outputNodes; i++) {
-      this.w[i] = matrixSum(
+      this.w[i] = matrixDifference(
         this.w[i],
         matrixHadamard(this.heta[i], this.dCdW[i])
       );

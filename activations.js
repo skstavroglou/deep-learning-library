@@ -15,3 +15,19 @@ function dSigmoid(t) {
   }
   return result;
 }
+
+function relu(t) {
+  var result = [];
+  for (let i = 0; i < t.length; i++) {
+    result[i] = Math.max(0, t[i]);
+  }
+  return result;
+}
+
+function dRelu(t) {
+  var result = [];
+  for (let i = 0; i < t.length; i++) {
+    result[i] = t[i] > 0 ? 1 : 0;
+  }
+  return result;
+}
